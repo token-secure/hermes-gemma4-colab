@@ -1,0 +1,13 @@
+memory:
+  session_db: /content/drive/MyDrive/hermes_gemma4/sessions.db
+  storage_dir: /content/drive/MyDrive/hermes_gemma4/memory
+model:
+  api_key: dummy
+  base_url: http://localhost:8000/v1
+  model_name: google/gemma-4-31B-it
+  provider: openai_compatible
+skills:
+  auto_create: true
+  skills_dir: /content/drive/MyDrive/hermes_gemma4/skills
+user_profile:
+  profile_path: /content/drive/MyDrive/hermes_gemma4/user_profile.json
