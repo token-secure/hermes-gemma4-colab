@@ -113,13 +113,18 @@ def start_vllm(timeout_sec: int = 600):
     Path("logs").mkdir(exist_ok=True)
 
     # A100 80GB 用に最適化された起動コマンド
+    # 注意: vLLM 0.20+ では:
+    #   - CUDA Graph profiling がデフォルトONになり KV cache 使用可能量が減る
+    #   - Gemma 4 のマルチモーダル制約で --max-num-batched-tokens を明示的に指定する必要がある
+    # 対応: gpu-memory-utilization=0.95, max-model-len=10240 で安定動作確認済み
     cmd = (
         "nohup vllm serve google/gemma-4-31B-it "
         "--host 0.0.0.0 --port 8000 "
         "--dtype bfloat16 "
-        "--gpu-memory-utilization 0.90 "
-        "--max-model-len 16384 "
+        "--gpu-memory-utilization 0.95 "
+        "--max-model-len 10240 "
         "--max-num-seqs 16 "
+        "--max-num-batched-tokens 10240 "
         "--enable-prefix-caching "
         "> logs/vllm.log 2>&1 &"
     )
